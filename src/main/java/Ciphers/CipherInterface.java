@@ -5,5 +5,5 @@ public interface CipherInterface {
 
     String encrypt(final String plaintext);
 
-    String decrypt(final String ciphertext);
+    String decrypt(final String cipherText);
 }

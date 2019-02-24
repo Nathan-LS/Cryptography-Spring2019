@@ -1,6 +1,6 @@
 package Ciphers.CaesarCases;
 
-public class CaesarCase1 extends CaesarAbstractTest {
+public class CaesarCase1Test extends CaesarAbstractTest {
     protected String key() {
         return "9";
     }

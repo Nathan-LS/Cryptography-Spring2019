@@ -6,7 +6,7 @@ public class Caesar extends CipherAbstractBase {
     private Integer intKey;
 
     @Override
-    public boolean setKey(String key) {
+    public boolean setKey(final String key) {
         try {
             intKey = Integer.parseInt(key);
         } catch (NumberFormatException ex) {
@@ -25,7 +25,7 @@ public class Caesar extends CipherAbstractBase {
     }
 
     @Override
-    public String encrypt(String plaintext) {
+    public String encrypt(final String plaintext) {
         String return_string = "";
         for (int i = 0; i < plaintext.length(); i++) {
             char c = plaintext.charAt(i);
@@ -46,10 +46,10 @@ public class Caesar extends CipherAbstractBase {
     }
 
     @Override
-    public String decrypt(String ciphertext) {
+    public String decrypt(final String cipherText) {
         String return_string = "";
-        for (int i = 0; i < ciphertext.length(); i++) {
-            char c = ciphertext.charAt(i);
+        for (int i = 0; i < cipherText.length(); i++) {
+            char c = cipherText.charAt(i);
             if (!Character.isLetter(c)) {
                 return_string += c;
                 continue;

@@ -1,0 +1,1 @@
+this is another demo string! Now this string contains numbers such as : 1, 2, 3,4, 5. Any characters that are not letters should not be encrypted and appear as plaintext.
