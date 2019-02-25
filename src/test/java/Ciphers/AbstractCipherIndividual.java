@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public abstract class CipherAbstractIndividualTest extends CipherAbstractBaseTest {
+public abstract class AbstractCipherIndividual extends AbstractCipherBaseTest {
     /**
      * Extend this class to test single, simple cases with a cipher. You must override:
      * string_to_encrypt        Return a string to be encrypted.

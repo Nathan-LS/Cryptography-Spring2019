@@ -1,0 +1,2 @@
+THIS IS NEW TEST STRING THAT IS USING ALL CAPS FOR THE FIRST PART.
+in the second part, we are using all lowercase characters to test the encryption of this new string!!

@@ -3,7 +3,6 @@ package Ciphers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -19,14 +18,14 @@ class CaesarTestKey {
 
     @Test
     void setKeyValid() {
-        for (String s : new ArrayList<String>(Arrays.asList("1", "2", "3", "4", "23"))) {
+        for (String s : Arrays.asList("1", "2", "3", "4", "23")) {
             assertTrue(cipher.setKey(s));
         }
     }
 
     @Test
     void setKeyInvalid() {
-        for (String s : new ArrayList<String>(Arrays.asList("test", "t", "5.5", "100", "-5"))) {
+        for (String s : Arrays.asList("test", "t", "5.5", "100", "-5")) {
             assertFalse(cipher.setKey(s));
         }
     }

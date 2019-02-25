@@ -1,9 +1,9 @@
 package Ciphers.CaesarCases;
 
+import Ciphers.AbstractCipherMultiFile;
 import Ciphers.Caesar;
-import Ciphers.CipherAbstractIndividualTest;
 
-public abstract class CaesarAbstractTest extends CipherAbstractIndividualTest {
+public abstract class AbstractCaesarMultiFile extends AbstractCipherMultiFile {
     @Override
     protected Class cipher_class() {
         return Caesar.class;
