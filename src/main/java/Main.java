@@ -1,6 +1,10 @@
+import CipherDriver.CipherDriver;
+
+import java.io.IOException;
+
 public class Main {
-    public static void main(String[] args) {
-        System.out.println("Main is not implemented yet. Run unit tests via gradle test");
-        System.exit(1);
+    public static void main(String[] args) throws IOException {
+        CipherDriver c = new CipherDriver(args);
+        c.runCipher();
     }
 }
