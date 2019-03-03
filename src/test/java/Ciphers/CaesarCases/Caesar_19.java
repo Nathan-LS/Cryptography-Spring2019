@@ -1,8 +1,8 @@
 package Ciphers.CaesarCases;
 
-public class MultiFileKey9 extends AbstractCaesarMultiFile {
+class Caesar_19 extends AbstractCaesarMultiFile {
     @Override
     protected String key() {
-        return "9";
+        return "19";
     }
 }
