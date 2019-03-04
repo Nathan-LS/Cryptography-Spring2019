@@ -1,8 +1,8 @@
 package Ciphers.RailFenceCases;
 
-class RailFence_TestKey extends AbstractRailFence {
+class RailFence_1 extends AbstractRailFence {
     @Override
     protected String key() {  //todo
-        return "TestKey";
+        return "1";
     }
 }

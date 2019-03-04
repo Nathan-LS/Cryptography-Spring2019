@@ -2,20 +2,13 @@ package Ciphers;
 
 public class PlayFair extends CipherAbstractBase {
 
-	@Override
-	public void setKey(String k)
-	{
-		key = k;
-	}
-	
-	@Override
-	public String [] Pairs (string plaintext) {
+    public String[] Pairs(String plaintext) {
 		int size = plaintext.length();
 		
 		if(size % 2 != 0)
 			size++;
-		
-		String x[] = new String[size / 2];
+
+        String[] x = new String[size / 2];
 		
 		int counter = 0;
 		

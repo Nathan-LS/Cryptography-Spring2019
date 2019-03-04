@@ -2,8 +2,8 @@ package Ciphers;
 
 import org.junit.jupiter.api.BeforeEach;
 
-public abstract class AbstractCipherBaseTest {
-    CipherAbstractBase cipher;
+public abstract class AbstractCipherBaseTest<T extends CipherAbstractBase> {
+    T cipher;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -11,12 +11,12 @@ public abstract class AbstractCipherBaseTest {
         cipher.setKey(key());
     }
 
-    private CipherAbstractBase reflection_make() throws Exception {
+    private T reflection_make() throws Exception {
         return cipher_class().getConstructor().newInstance();
     }
 
     // a class definition for reflection
-    protected abstract Class<CipherAbstractBase> cipher_class();
+    protected abstract Class<T> cipher_class();
 
     // this is the key used for the test case
     protected abstract String key();

@@ -26,11 +26,11 @@ public class Caesar extends CipherAbstractBase {
 
     @Override
     public String encrypt(final String plaintext) {
-        String return_string = "";
+        StringBuilder returnString = new StringBuilder();
         for (int i = 0; i < plaintext.length(); i++) {
             char c = plaintext.charAt(i);
             if (!Character.isLetter(c)) {
-                return_string += c;
+                returnString.append(c);
                 continue;
             }
             int ascii_value = (int) plaintext.charAt(i);
@@ -40,18 +40,18 @@ public class Caesar extends CipherAbstractBase {
             } else {
                 new_ascii = floorMod((ascii_value - 97) + intKey, 26) + 97;
             }
-            return_string += (char) new_ascii;
+            returnString.append((char) new_ascii);
         }
-        return return_string;
+        return returnString.toString();
     }
 
     @Override
     public String decrypt(final String cipherText) {
-        String return_string = "";
+        StringBuilder returnString = new StringBuilder();
         for (int i = 0; i < cipherText.length(); i++) {
             char c = cipherText.charAt(i);
             if (!Character.isLetter(c)) {
-                return_string += c;
+                returnString.append(c);
                 continue;
             }
             int ascii_value = (int) c;
@@ -61,8 +61,8 @@ public class Caesar extends CipherAbstractBase {
             } else {
                 new_ascii = floorMod((ascii_value - 97) - intKey, 26) + 97;
             }
-            return_string += (char) new_ascii;
+            returnString.append((char) new_ascii);
         }
-        return return_string;
+        return returnString.toString();
     }
 }

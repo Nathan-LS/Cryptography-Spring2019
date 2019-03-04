@@ -33,7 +33,7 @@ public class CipherDriver {
                 cipher = new RowTransposition();
                 break;
             case "RFC":
-                cipher = new Railfence();
+                cipher = new RailFence();
                 break;
             case "VIG":
                 cipher = new Vigenre();

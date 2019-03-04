@@ -1,13 +1,13 @@
 package Ciphers.RailFenceCases;
 
 import Ciphers.AbstractCipherMultiFile;
-import Ciphers.Railfence;
+import Ciphers.RailFence;
 
 
 abstract class AbstractRailFence extends AbstractCipherMultiFile {
     @Override
     protected Class cipher_class() {
-        return Railfence.class;
+        return RailFence.class;
     }
 
 }
