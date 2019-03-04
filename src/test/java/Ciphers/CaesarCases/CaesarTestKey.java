@@ -1,5 +1,6 @@
-package Ciphers;
+package Ciphers.CaesarCases;
 
+import Ciphers.Caesar;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

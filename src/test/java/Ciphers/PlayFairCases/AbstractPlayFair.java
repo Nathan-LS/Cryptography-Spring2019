@@ -1,10 +1,10 @@
 package Ciphers.PlayFairCases;
 
-import Ciphers.AbstractCipherIndividual;
+import Ciphers.AbstractCipherMultiFile;
 import Ciphers.PlayFair;
 
 
-abstract class PlayFairAbstractTest extends AbstractCipherIndividual {
+abstract class AbstractPlayFair extends AbstractCipherMultiFile {
     @Override
     protected Class cipher_class() {
         return PlayFair.class;

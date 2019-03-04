@@ -60,10 +60,11 @@ public abstract class AbstractCipherMultiFile extends AbstractCipherBaseTest {
                     fail(String.format("You are missing the encrypted file for the test input file of: %s.\nPlease create an assert text file called: %s", plaintextFileName, plaintextFileName.replace("plaintext_", "encrypted_")));
                     return;
                 }
-                System.out.println(String.format("Testing encryption and decryption for file: '%s' with key '%s'", plaintextFileName, key()));
+                System.out.println(String.format("Testing encryption and decryption for file: '%s' with key '%s' using the %s cipher.", plaintextFileName, key(), cipher_class().getSimpleName()));
                 final String plainText = FileUtils.readFileToString(f, "utf-8");
                 final String encryptedText = FileUtils.readFileToString(encryptedFile, "utf-8");
-                assertNotEquals(plainText, encryptedText, plaintextFileName);
+                assertNotEquals(plainText, encryptedText,
+                        String.format("Encryption and decryption test case files should not have the same exact content. Error with test case file: %s", plaintextFileName));
                 assertEquals(encryptedText, cipher.encrypt(plainText), "Encrypt: " + plaintextFileName);
                 assertEquals(plainText, cipher.decrypt(encryptedText), "Decrypt: " + plaintextFileName);
                 test_counter++;
