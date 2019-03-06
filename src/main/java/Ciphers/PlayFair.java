@@ -2,12 +2,12 @@ package Ciphers;
 
 public class PlayFair extends CipherAbstractBase {
 
-	private String keyword = new String();
-	private String key = new String();
-	private char matrixPF[][] = new char[5][5];
+	private String Keyword = "";
+	private String key = "";
+	private char[][] matrixPF = new char[5][5];
 
 	public void keySet(String k) {
-		String kadjust = new String();
+		String kadjust = "";
 		boolean flag = false;
 		kadjust = kadjust + k.charAt(0);
 
@@ -21,18 +21,19 @@ public class PlayFair extends CipherAbstractBase {
 				}
 			}
 
-			if(flag == false)
+			if(!flag)
 				kadjust = kadjust + k.charAt(i);
+			flag = false;
 		}
 
-		keyword = kadjust;
+		Keyword = kadjust;
 	}
 
 	public void genKey()
 	{
 		boolean flag = true;
 		char current;
-		key = keyword;
+		key = Keyword;
 
 		for(int i = 0; i < 26; i++)
 		{
@@ -40,9 +41,9 @@ public class PlayFair extends CipherAbstractBase {
 			if(current == 'j')
 				continue;
 
-			for(int j = 0; j < keyword.length(); j++)
+			for(int j = 0; j < Keyword.length(); j++)
 			{
-				if(current == keyword.charAt(j))
+				if(current == Keyword.charAt(j))
 				{
 					flag = false;
 					break;
@@ -75,8 +76,8 @@ public class PlayFair extends CipherAbstractBase {
 	public String format(String oldText)
 	{
 		int i = 0;
-		int len = 0;
-		String text = new String();
+		int len;
+		String text = "";
 		len = oldText.length();
 
 		for(int t = 0; t < len; t++)
@@ -117,7 +118,21 @@ public class PlayFair extends CipherAbstractBase {
 
 	public int[] getDimensions(char character)
 	{
+		int[] key = new int[2];
 
+		if (character == 'j')
+			character = 'i';
+		for (int i = 0; i < 5; i++)
+		{
+			for (int j = 0; j < 5; j++) {
+				if (matrixPF[i][j] == character) {
+					key[0] = i;
+					key[1] = j;
+					break;
+				}
+			}
+		}
+		return key;
 	}
 
     @Override
@@ -125,19 +140,103 @@ public class PlayFair extends CipherAbstractBase {
 		
 		String result = "";
 		
-		String [][] encmatrix = new String[5][5];
-		
-		for(int i = 0; i < plaintext.length(); i++)
+		String [] source = Pairs(plaintext);
+		char first;
+		char second;
+		int[] partOne;
+		int[] partTwo;
+
+		for(int i = 0; i < source.length; i++)
 		{
-			
+			first = source[i].charAt(0);
+			second = source[i].charAt(1);
+			partOne = getDimensions(first);
+			partTwo = getDimensions(second);
+
+			if(partOne[0] == partTwo[0])
+			{
+				if(partOne[1] < 4)
+					partOne[1]++;
+				else
+					partOne[1] = 0;
+				if(partTwo[1] < 4)
+					partTwo[1]++;
+				else
+					partTwo[1] = 0;
+			}
+			else if (partOne[1] == partTwo[1])
+			{
+				if(partOne[0] < 4)
+					partOne[0]++;
+				else
+					partOne[0] = 0;
+				if(partTwo[0] < 4)
+					partTwo[0]++;
+				else
+					partTwo[0] = 0;
+			}
+			else
+			{
+				int temp = partOne[1];
+				partOne[1] = partTwo[1];
+				partTwo[1] = temp;
+			}
+			result = result + matrixPF[partOne[0]][partOne[1]] + matrixPF[partTwo[0]][partTwo[1]];
 		}
 		
 
-        return null;
+        return result;
     }
 
     @Override
     public String decrypt(final String cipherText) { //TODO
-        return null;
+		String result = "";
+
+		String [] source = Pairs(cipherText);
+		char first;
+		char second;
+		int[] partOne;
+		int[] partTwo;
+
+		for(int i = 0; i < source.length; i++)
+		{
+			first = source[i].charAt(0);
+			second = source[i].charAt(1);
+			partOne = getDimensions(first);
+			partTwo = getDimensions(second);
+
+			if(partOne[0] == partTwo[0])
+			{
+				if(partOne[1] > 0)
+					partOne[1]--;
+				else
+					partOne[1] = 4;
+				if(partTwo[1] > 0)
+					partTwo[1]--;
+				else
+					partTwo[1] = 4;
+			}
+			else if (partOne[1] == partTwo[1])
+			{
+				if(partOne[0] > 0)
+					partOne[0]--;
+				else
+					partOne[0] = 4;
+				if(partTwo[0] < 4)
+					partTwo[0]--;
+				else
+					partTwo[0] = 4;
+			}
+			else
+			{
+				int temp = partOne[1];
+				partOne[1] = partTwo[1];
+				partTwo[1] = temp;
+			}
+			result = result + matrixPF[partOne[0]][partOne[1]] + matrixPF[partTwo[0]][partTwo[1]];
+		}
+
+
+		return result;
     }
 }
