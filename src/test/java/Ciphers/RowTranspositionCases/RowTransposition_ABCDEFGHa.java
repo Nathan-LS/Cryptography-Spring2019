@@ -1,8 +1,8 @@
 package Ciphers.RowTranspositionCases;
 
-class RowTransposition_TestKey extends AbstractRowTransposition {
+class RowTransposition_ABCDEFGHa extends AbstractRowTransposition {
     @Override
     protected String key() {  //todo
-        return "TestKey";
+        return "ABCDEFGHa";
     }
 }

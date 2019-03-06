@@ -2,12 +2,12 @@ package Ciphers;
 
 public class PlayFair extends CipherAbstractBase {
 
-	private String keyword = new String();
-	private String key = new String();
-	private char matrixPF[][] = new char[5][5];
+	private String keyword = "";
+	private String key = "";
+	private char[][] matrixPF = new char[5][5];
 
 	public void keySet(String k) {
-		String kadjust = new String();
+		String kadjust = "";
 		boolean flag = false;
 		kadjust = kadjust + k.charAt(0);
 
@@ -76,7 +76,7 @@ public class PlayFair extends CipherAbstractBase {
 	{
 		int i = 0;
 		int len = 0;
-		String text = new String();
+		String text = "";
 		len = oldText.length();
 
 		for(int t = 0; t < len; t++)
@@ -117,7 +117,7 @@ public class PlayFair extends CipherAbstractBase {
 
 	public int[] getDimensions(char character)
 	{
-
+		return null;  //todo fix compile error
 	}
 
     @Override

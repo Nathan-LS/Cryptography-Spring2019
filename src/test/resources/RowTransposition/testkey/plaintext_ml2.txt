@@ -1,0 +1,8 @@
+Hello
+again!
+this
+is
+a
+very long multi line test. Java has to strip out the \ r character on Windows as there are 2 characters for every new line instead of
+just \ n. This can cause issues when parsing data and given unexpected results when we
+attempt to encrypt and decrypt our data.

@@ -55,20 +55,19 @@ public class RailFence extends CipherAbstractBase {
     }
 
     @Override
-    public String encrypt(String plaintext) {
+    public String encrypt(final String plaintext) {
+        String plainText = stripWindowsNewLines(plaintext);
         resetRowCol();
-        Character[][] matrix = new Character[intKey][plaintext.length()];
+        Character[][] matrix = new Character[intKey][plainText.length()];
         StringBuilder returnString = new StringBuilder();
-        for (int i = 0; i < plaintext.length(); i++) {
-            matrix[row][col] = plaintext.charAt(i);
+        for (int i = 0; i < plainText.length(); i++) {
+            matrix[row][col] = plainText.charAt(i);
             next_position();
         }
         for (int i = 0; i < intKey; i++) {
-            for (int j = 0; j < plaintext.length(); j++) {
+            for (int j = 0; j < plainText.length(); j++) {
                 Character c = matrix[i][j];
-                if (c != null) {
-                    returnString.append(c);
-                }
+                stringBuilderAppend(returnString, c);
             }
         }
         return returnString.toString();
@@ -76,33 +75,32 @@ public class RailFence extends CipherAbstractBase {
 
     @Override
     public String decrypt(final String cipherText) {
+        String ciphertext = stripWindowsNewLines(cipherText);
         resetRowCol();
-        Character[][] matrix = new Character[intKey][cipherText.length()];
+        Character[][] matrix = new Character[intKey][ciphertext.length()];
         List<Queue<Integer>> availablePositions = new ArrayList<>();
         StringBuilder returnString = new StringBuilder();
         for (int i = 0; i < intKey; i++) {
             availablePositions.add(new LinkedList<>());
         }
-        for (int i = 0; i < cipherText.length(); i++) {
+        for (int i = 0; i < ciphertext.length(); i++) {
             availablePositions.get(row).add(col);
             next_position();
         }
         Integer rowIndex = 0;
-        for (int i = 0; i < cipherText.length(); i++) {
+        for (int i = 0; i < ciphertext.length(); i++) {
             Queue<Integer> availableRow = availablePositions.get(rowIndex);
             while (availableRow.isEmpty()) {
                 rowIndex++;
                 assert (!rowIndex.equals(intKey));
                 availableRow = availablePositions.get(rowIndex);
             }
-            matrix[rowIndex][availableRow.remove()] = cipherText.charAt(i);
+            matrix[rowIndex][availableRow.remove()] = ciphertext.charAt(i);
         }
         resetRowCol();
-        for (int i = 0; i < cipherText.length(); i++) {
+        for (int i = 0; i < ciphertext.length(); i++) {
             Character c = matrix[row][col];
-            if (c != null) {
-                returnString.append(c);
-            }
+            stringBuilderAppend(returnString, c);
             next_position();
         }
         return returnString.toString();
