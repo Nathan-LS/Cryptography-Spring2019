@@ -35,6 +35,9 @@ public class CipherDriver {
             case "RFC":
                 cipher = new RailFence();
                 break;
+            case "RFCI":
+                cipher = new RailFenceInverted();
+                break;
             case "VIG":
                 cipher = new Vigenre();
                 break;

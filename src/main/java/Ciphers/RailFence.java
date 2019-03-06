@@ -6,21 +6,21 @@ import java.util.List;
 import java.util.Queue;
 
 public class RailFence extends CipherAbstractBase {
-    private Integer intKey;
-    private Integer row = 0;
-    private Integer col = 0;
-    private Boolean desc = true;
+    protected Integer intKey;
+    protected Integer row = 0;
+    protected Integer col = 0;
+    protected Boolean desc = true;
 
     @Override
     public boolean setKey(String key) {
         try {
             intKey = Integer.parseInt(key);
         } catch (NumberFormatException ex) {
-            System.out.println("You must pass a valid integer as the key when using the RailFence cipher.");
+            System.out.println("You must pass a valid integer as the key when using the RailFenceInverted cipher.");
             return false;
         }
         if (intKey <= 0) {
-            System.out.println("You must pass an integer greater than 0 when using the RailFence cipher");
+            System.out.println("You must pass an integer greater than 0 when using the RailFenceInverted cipher");
             return false;
         }
         return true;
@@ -32,24 +32,15 @@ public class RailFence extends CipherAbstractBase {
         desc = true;
     }
 
-    private void next_position() {
+    protected void next_position() {
         if (intKey == 1) {
             col++;
-        } else if (desc) {
-            if (row >= intKey - 1) {
-                desc = false;
-                row--;
-                col++;
-            } else {
-                row++;
-            }
         } else {
-            if (row <= 0) {
-                desc = true;
-                row++;
+            if (row >= intKey - 1) {
+                row = 0;
                 col++;
             } else {
-                row--;
+                row++;
             }
         }
     }
