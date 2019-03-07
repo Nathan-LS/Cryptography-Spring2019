@@ -1,10 +1,10 @@
 package Ciphers;
 
 public class PlayFair extends CipherAbstractBase {
-
     private String Keyword = "";
     private String key = "";
     private char[][] matrixPF = new char[5][5];
+
 
     public void keySet(String k) {
         String kadjust = "";
@@ -55,7 +55,7 @@ public class PlayFair extends CipherAbstractBase {
                 key = key + current;
             flag = true;
         }
-        System.out.println(key);
+        //System.out.println(key);
         matrix();
     }
 
@@ -68,17 +68,17 @@ public class PlayFair extends CipherAbstractBase {
             for(int j = 0; j < 5; j++)
             {
                 matrixPF[i][j] = key.charAt(counter);
-                System.out.print(matrixPF[i][j] + " ");
+                //System.out.print(matrixPF[i][j] + " ");
                 counter++;
             }
-            System.out.println();
+            //System.out.println();
         }
     }
 
     public String format(String oldText)
     {
-        int i = 0;
-        int len = 0;
+        int i;
+        int len;
         String text = "";
         len = oldText.length();
 
@@ -145,7 +145,8 @@ public class PlayFair extends CipherAbstractBase {
     }
 
     public String encrypt(final String plaintext) {
-
+        keySet(CipherKey);
+        genKey();
         String result = "";
 
         String [] source = Pairs(plaintext);
@@ -198,6 +199,8 @@ public class PlayFair extends CipherAbstractBase {
     }
 
     public String decrypt(final String cipherText) {
+        keySet(CipherKey);
+        genKey();
         String result = "";
 
         String [] source = Pairs(cipherText);
