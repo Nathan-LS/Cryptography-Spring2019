@@ -84,7 +84,8 @@ public class Vigenre extends CipherAbstractBase {
     }
 
     @Override
-    public String encrypt(final String plaintext) { //TODO
+    public String encrypt(String plaintext) {
+        plaintext = plaintext.toUpperCase(); // in case input string has lowercase
         initBoard();
 
         // Final ciphertext result
@@ -111,7 +112,8 @@ public class Vigenre extends CipherAbstractBase {
     }
 
     @Override
-    public String decrypt(final String ciphertext) { //TODO
+    public String decrypt(String ciphertext) {
+        ciphertext = ciphertext.toUpperCase(); // in case input string has lowercase
         initBoard();
 
         // Final plaintext result

@@ -1,6 +1,6 @@
 package Ciphers.PlayFairCases;
 
-class PlayFair_1 extends AbstractPlayFair {
+class PlayFair_Whatever extends AbstractPlayFair {
     @Override
     protected String key() {
         return "Whatever";

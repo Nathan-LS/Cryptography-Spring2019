@@ -64,7 +64,7 @@ public abstract class AbstractCipherMultiFile extends AbstractCipherBaseTest {
                 final String plainText = FileUtils.readFileToString(f, "utf-8");
                 final String encryptedText = FileUtils.readFileToString(encryptedFile, "utf-8");
                 if (plainText.equals(encryptedText)) {
-                    System.err.println(String.format("Encryption and decryption test case files should not have the same exact content. Error with test case file: %s", plaintextFileName));
+                    System.err.println(String.format("WARNING: Encryption and decryption test case files should not have the same exact content unless the encryption results in the plaintext. Double check your test case file: %s", plaintextFileName));
                 }
                 assertEquals(encryptedText, cipher.encrypt(plainText), "Encrypt: " + plaintextFileName);
                 assertEquals(plainText, cipher.decrypt(encryptedText), "Decrypt: " + plaintextFileName);

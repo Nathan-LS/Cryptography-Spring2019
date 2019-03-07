@@ -1,8 +1,8 @@
 package Ciphers.VigenreCases;
 
-class Vigenre_1 extends AbstractVigenre {
+class Vigenre_DECEPTIVE extends AbstractVigenre {
     @Override
     protected String key() {
-        return "VIGENRE";
+        return "DECEPTIVE";
     }
 }
