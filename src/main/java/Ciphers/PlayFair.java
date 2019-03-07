@@ -10,12 +10,14 @@ public class PlayFair extends CipherAbstractBase {
 		String kadjust = "";
 		boolean flag = false;
 		kadjust = kadjust + k.charAt(0);
+		//System.out.println("setting key");
 
-		for(int i = 1; i < k.length(); i++)
+		for(int i = 1; i < k.length() - 1; i++)
 		{
-			for(int j = 0; j < kadjust.length(); j++)
+			for(int j = 0; j < kadjust.length() - 1; j++)
 			{
-				if(kadjust.charAt(i) == kadjust.charAt(j))
+
+				if(k.charAt(i) == kadjust.charAt(j))
 				{
 					flag = true;
 				}
@@ -61,12 +63,13 @@ public class PlayFair extends CipherAbstractBase {
 	public void matrix()
 	{
 		int counter = 0;
+
 		for(int i = 0; i < 5; i++)
 		{
 			for(int j = 0; j < 5; j++)
 			{
 				matrixPF[i][j] = key.charAt(counter);
-				System.out.println(matrixPF[i][j] + " ");
+				System.out.print(matrixPF[i][j] + " ");
 				counter++;
 			}
 			System.out.println();
@@ -77,14 +80,16 @@ public class PlayFair extends CipherAbstractBase {
 	{
 		int i = 0;
 		int len;
-		String text = "";
+		String text = oldText;
 		len = oldText.length();
 
-		for(int t = 0; t < len; t++)
+		for(int t = 0; t < len - 1; t++)
 		{
 			if(text.charAt(i + 1) == text.charAt(i))
 			{
+				System.out.println(text);
 				text = text.substring(0, i + 1) + 'x' + text.substring(i + 1);
+				System.out.println(text);
 			}
 		}
 
@@ -95,24 +100,24 @@ public class PlayFair extends CipherAbstractBase {
 	{
 		String original = format(new_string);
 		int size = original.length();
-		
+
 		if(size % 2 != 0)
 		{
 			size++;
 			original = original + 'x';
 		}
 
-        String[] x = new String[size / 2];
-		
+		String[] x = new String[size / 2];
+
 		int counter = 0;
-		
-		for (int i = 0; i < size / 2; i++)
+
+		for (int i = 0; i < (size / 2) - 1; i++)
 		{
 			x[i] = original.substring(counter, counter + 2);
 			System.out.println(x[i]);
 			counter += 2;
 		}
-	
+
 		return x;
 	}
 
@@ -135,18 +140,18 @@ public class PlayFair extends CipherAbstractBase {
 		return key;
 	}
 
-    @Override
-    public String encrypt(final String plaintext) { //TODO
-		
+	@Override
+	public String encrypt(final String plaintext) {
+
 		String result = "";
-		
+
 		String [] source = Pairs(plaintext);
 		char first;
 		char second;
 		int[] partOne;
 		int[] partTwo;
 
-		for(int i = 0; i < source.length; i++)
+		for(int i = 0; i < source.length - 1; i++)
 		{
 			first = source[i].charAt(0);
 			second = source[i].charAt(1);
@@ -183,13 +188,13 @@ public class PlayFair extends CipherAbstractBase {
 			}
 			result = result + matrixPF[partOne[0]][partOne[1]] + matrixPF[partTwo[0]][partTwo[1]];
 		}
-		
 
-        return result;
-    }
 
-    @Override
-    public String decrypt(final String cipherText) { //TODO
+		return result;
+	}
+
+	@Override
+	public String decrypt(final String cipherText) {
 		String result = "";
 
 		String [] source = Pairs(cipherText);
@@ -198,7 +203,7 @@ public class PlayFair extends CipherAbstractBase {
 		int[] partOne;
 		int[] partTwo;
 
-		for(int i = 0; i < source.length; i++)
+		for(int i = 0; i < source.length - 1; i++)
 		{
 			first = source[i].charAt(0);
 			second = source[i].charAt(1);
@@ -238,5 +243,5 @@ public class PlayFair extends CipherAbstractBase {
 
 
 		return result;
-    }
+	}
 }
