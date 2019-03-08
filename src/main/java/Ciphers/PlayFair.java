@@ -7,23 +7,24 @@ public class PlayFair extends CipherAbstractBase {
 
 
     public void keySet(String k) {
+        String format_k = k.toUpperCase();
         String kadjust = "";
         boolean flag = false;
-        kadjust = kadjust + k.charAt(0);
+        kadjust = kadjust + format_k.charAt(0);
 
-        for(int i = 1; i < k.length(); i++)
+        for(int i = 1; i < format_k.length(); i++)
         {
             for(int j = 0; j < kadjust.length() - 1; j++)
             {
 
-                if(k.charAt(i) == kadjust.charAt(j))
+                if(format_k.charAt(i) == kadjust.charAt(j))
                 {
                     flag = true;
                 }
             }
 
             if(!flag)
-                kadjust = kadjust + k.charAt(i);
+                kadjust = kadjust + format_k.charAt(i);
             flag = false;
         }
 
@@ -38,8 +39,8 @@ public class PlayFair extends CipherAbstractBase {
 
         for(int i = 0; i < 26; i++)
         {
-            current = (char)(i + 97);
-            if(current == 'j')
+            current = (char)(i + 65);
+            if(current == 'J')
                 continue;
 
             for(int j = 0; j < Keyword.length(); j++)
@@ -55,7 +56,6 @@ public class PlayFair extends CipherAbstractBase {
                 key = key + current;
             flag = true;
         }
-        //System.out.println(key);
         matrix();
     }
 
@@ -68,34 +68,47 @@ public class PlayFair extends CipherAbstractBase {
             for(int j = 0; j < 5; j++)
             {
                 matrixPF[i][j] = key.charAt(counter);
-                //System.out.print(matrixPF[i][j] + " ");
                 counter++;
             }
-            //System.out.println();
         }
     }
 
     public String format(String oldText)
     {
-        int i;
-        int len;
+        int i = 0;
+        int len = 0;
         String text = "";
-        len = oldText.length();
+
+        String format_string = oldText.replace(" ", "");
+        format_string = format_string.toUpperCase();
+
+        len = format_string.length();
 
         for(int t = 0; t < len; t++)
         {
-            if(oldText.charAt(t) == 'j')
-                text = text + 'i';
+            if(format_string.charAt(t) == 'J')
+                text = text + 'I';
             else
-                text = text + oldText.charAt(t);
+                text = text + format_string.charAt(t);
         }
 
         len = text.length();
-        for(i = 0; i < len; i += 2)
+        if(len % 2 == 0)
         {
-            if(text.charAt(i + 1) == text.charAt(i))
+            for (i = 0; i < len; i += 2) {
+                if (text.charAt(i + 1) == text.charAt(i)) {
+                    text = text.substring(0, i + 1) + 'X' + text.substring(i + 2, len);
+                }
+            }
+        }
+        else
+        {
+            for(int j = 0; j < len + 1; j += 2)
             {
-                text = text.substring(0, i + 1) + 'x' + text.substring(i + 1);
+                if (text.charAt(j + 1) == text.charAt(j))
+                {
+                    text = text.substring(0, j + 1) + 'X' + text.substring(j + 2, len) + 'X';
+                }
             }
         }
         return text;
