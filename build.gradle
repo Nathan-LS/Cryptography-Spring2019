@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'jacoco'
+    id 'application'
 }
 group 'edu.fullerton.cryptography1'
 version '1.0-SNAPSHOT'
@@ -11,12 +12,8 @@ repositories {
     mavenCentral()
 }
 
-jar {
-    manifest {
-        attributes(
-                'Main-Class': 'Main'
-        )
-    }
+application {
+    mainClassName = 'Main'
 }
 
 test {
