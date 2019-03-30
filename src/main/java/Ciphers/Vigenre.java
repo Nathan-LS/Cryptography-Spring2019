@@ -24,7 +24,7 @@ public class Vigenre extends CipherAbstractBase {
     }
 
     @Override
-    public boolean setKey(String key) {
+    public boolean setKey(final String key) {
         // Store the key into a string variable
         stringKey = key;
 
@@ -84,8 +84,8 @@ public class Vigenre extends CipherAbstractBase {
     }
 
     @Override
-    public String encrypt(String plaintext) {
-        plaintext = plaintext.toUpperCase(); // in case input string has lowercase
+    public String encrypt(final String plainText) {
+        String pT = plainText.toUpperCase(); // in case input string has lowercase
         initBoard();
 
         // Final ciphertext result
@@ -95,8 +95,8 @@ public class Vigenre extends CipherAbstractBase {
         int key_pos = 0;
 
         // Use the plaintext and keyword to get the ciphertext
-        for (int i = 0; i < plaintext.length(); i++) {
-            char letter = getEncryptionLetter(plaintext.charAt(i), stringKey.charAt(key_pos));
+        for (int i = 0; i < pT.length(); i++) {
+            char letter = getEncryptionLetter(pT.charAt(i), stringKey.charAt(key_pos));
             ciphertext += letter ; 
             key_pos = key_pos + 1;
             
@@ -112,8 +112,8 @@ public class Vigenre extends CipherAbstractBase {
     }
 
     @Override
-    public String decrypt(String ciphertext) {
-        ciphertext = ciphertext.toUpperCase(); // in case input string has lowercase
+    public String decrypt(final String cipherText) {
+        String cT = cipherText.toUpperCase(); // in case input string has lowercase
         initBoard();
 
         // Final plaintext result
@@ -125,8 +125,8 @@ public class Vigenre extends CipherAbstractBase {
         // Use the ciphertext and keyword to get the plaintext
         // The keyword is the row and the ciphertext is to be found in the row
         // The plaintext is the column the letter was found at row 0
-        for (int i = 0; i < ciphertext.length(); i++) {
-            char letter = getDecryptionLetter(stringKey.charAt(key_pos), ciphertext.charAt(i));
+        for (int i = 0; i < cT.length(); i++) {
+            char letter = getDecryptionLetter(stringKey.charAt(key_pos), cT.charAt(i));
             plaintext += letter;
             key_pos = key_pos + 1;
 

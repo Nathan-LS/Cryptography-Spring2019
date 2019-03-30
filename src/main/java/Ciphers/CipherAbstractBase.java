@@ -1,9 +1,6 @@
 package Ciphers;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class CipherAbstractBase implements CipherInterface {
     String CipherKey;
 
@@ -11,7 +8,7 @@ public abstract class CipherAbstractBase implements CipherInterface {
     }
 
     @Override
-    public boolean setKey(final String key) {  // TODO: 2/23/2019  what is a valid key?
+    public boolean setKey(final String key) {
         CipherKey = key;
         return true;
     }
@@ -28,13 +25,5 @@ public abstract class CipherAbstractBase implements CipherInterface {
                 builder.append(c);
             }
         }
-    }
-
-    static public List<Character> stringToList(String s) {
-        List<Character> returnString = new ArrayList<>();
-        for (int i = 0; i < s.length(); i++) {
-            returnString.add(s.charAt(i));
-        }
-        return returnString;
     }
 }

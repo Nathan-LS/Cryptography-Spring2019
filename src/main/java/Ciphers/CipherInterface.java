@@ -3,7 +3,7 @@ package Ciphers;
 public interface CipherInterface {
     boolean setKey(final String key);
 
-    String encrypt(String plaintext);
+    String encrypt(final String plaintext);
 
-    String decrypt(String cipherText);
+    String decrypt(final String cipherText);
 }

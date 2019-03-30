@@ -12,7 +12,7 @@ public class RailFence extends CipherAbstractBase {
     protected Boolean desc = true;
 
     @Override
-    public boolean setKey(String key) {
+    public boolean setKey(final String key) {
         try {
             intKey = Integer.parseInt(key);
         } catch (NumberFormatException ex) {

@@ -17,19 +17,19 @@ public class RowTransposition extends CipherAbstractBase {
     }
 
     @Override
-    public String encrypt(String plaintext) {
-        plaintext = stripWindowsNewLines(plaintext);
+    public String encrypt(final String plaintext) {
+        String pt = stripWindowsNewLines(plaintext);
         List<List<Character>> m = new ArrayList<>();
         StringBuilder returnString = new StringBuilder();
         int col = 0;
-        for (int i = 0; i < plaintext.length(); i++) {
+        for (int i = 0; i < pt.length(); i++) {
             if (col >= CipherKey.length()) {
                 col = 0;
             }
             try {
-                m.get(col).add(plaintext.charAt(i));
+                m.get(col).add(pt.charAt(i));
             } catch (IndexOutOfBoundsException ex) {
-                m.add(new ArrayList<>(Arrays.asList(plaintext.charAt(i))));
+                m.add(new ArrayList<>(Arrays.asList(pt.charAt(i))));
             }
             col++;
         }
@@ -43,21 +43,21 @@ public class RowTransposition extends CipherAbstractBase {
     }
 
     @Override
-    public String decrypt(String cipherText) {
-        cipherText = stripWindowsNewLines(cipherText);
+    public String decrypt(final String cipherText) {
+        String cT = stripWindowsNewLines(cipherText);
         StringBuilder returnString = new StringBuilder();
         List<List<Character>> matrix = new ArrayList<>();
         int col = 0;
         int row = 0;
-        final int maxRow = (int) Math.ceil((float) cipherText.length() / CipherKey.length());
-        int extra = (maxRow * CipherKey.length()) - cipherText.length();
+        final int maxRow = (int) Math.ceil((float) cT.length() / CipherKey.length());
+        int extra = (maxRow * CipherKey.length()) - cT.length();
         List<Integer> positions = reorderPositions();
         List<Integer> nullPadder = new ArrayList<>();
         while (extra > 0) {
             nullPadder.add(positions.indexOf(CipherKey.length() - extra));
             extra--;
         }
-        for (int i = 0; i < cipherText.length(); i++) {
+        for (int i = 0; i < cT.length(); i++) {
             if (row >= maxRow) {
                 row = 0;
                 col++;
@@ -73,7 +73,7 @@ public class RowTransposition extends CipherAbstractBase {
                 rowMatrix.add(null);
                 i = i - 1;
             } else {
-                rowMatrix.add(cipherText.charAt(i));
+                rowMatrix.add(cT.charAt(i));
             }
             row++;
         }

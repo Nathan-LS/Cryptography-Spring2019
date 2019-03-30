@@ -25,34 +25,9 @@ public class CipherDriver {
     }
 
     public void runCipher() throws IOException {
-        switch (args[0]) {
-            case "PLF":
-                cipher = new PlayFair();
-                break;
-            case "RTS":
-                cipher = new RowTransposition();
-                break;
-            case "RFC":
-                cipher = new RailFence();
-                break;
-            case "RFCI":
-                cipher = new RailFenceInverted();
-                break;
-            case "VIG":
-                cipher = new Vigenre();
-                break;
-            case "CES":
-                cipher = new Caesar();
-                break;
-            case "HIL":
-                cipher = new HillCipherEC();
-                break;
-            case "3RE":
-                cipher = new ThreeRotorEnigmaEC();
-                break;
-            default:
-                System.out.println(String.format("Unrecognized cipher type: %s", args[0]));
-                System.exit(1);
+        cipher = CipherFactory.getCipher(args[0]);
+        if (cipher == null){
+            System.exit(1);
         }
         setKey(args[1]);
         switch (args[2]) {

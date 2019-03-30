@@ -31,6 +31,12 @@ public abstract class AbstractCipherMultiFile extends AbstractCipherBaseTest {
         return cipher_class().getSimpleName();
     }
 
+
+    protected String helper_newLine(String inputText){
+        //convert input text to have consistent new lines for Windows.
+        return inputText.replace("\r\n", "\n");
+    }
+
     @Override
     @BeforeEach
     void setUp() throws Exception {
@@ -66,8 +72,8 @@ public abstract class AbstractCipherMultiFile extends AbstractCipherBaseTest {
                 if (plainText.equals(encryptedText)) {
                     System.err.println(String.format("WARNING: Encryption and decryption test case files should not have the same exact content unless the encryption results in the plaintext. Double check your test case file: %s", plaintextFileName));
                 }
-                assertEquals(encryptedText, cipher.encrypt(plainText), "Encrypt: " + plaintextFileName);
-                assertEquals(plainText, cipher.decrypt(encryptedText), "Decrypt: " + plaintextFileName);
+                assertEquals(helper_newLine(encryptedText), helper_newLine(cipher.encrypt(plainText)), "Encrypt: " + plaintextFileName);
+                assertEquals(helper_newLine(plainText), helper_newLine(cipher.decrypt(encryptedText)), "Decrypt: " + plaintextFileName);
                 test_counter++;
             }
         }
