@@ -3,7 +3,7 @@ package CipherDriver;
 import Ciphers.*;
 
 public class CipherFactory {
-    static CipherAbstractBase getCipher(String cipher){
+    static CipherAbstractTextBase getCipher(String cipher){
         switch (cipher) {
             case "PLF":
                 return new PlayFair();

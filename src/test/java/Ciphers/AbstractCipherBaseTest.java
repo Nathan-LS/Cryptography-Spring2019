@@ -2,7 +2,7 @@ package Ciphers;
 
 import org.junit.jupiter.api.BeforeEach;
 
-public abstract class AbstractCipherBaseTest<T extends CipherAbstractBase> {
+public abstract class AbstractCipherBaseTest<T extends CipherInterface> {
     T cipher;
 
     @BeforeEach

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class RowTransposition extends CipherAbstractBase {
+public class RowTransposition extends CipherAbstractTextBase {
     @Override
     public boolean setKey(String key) {
         if (key.length() == 0) {

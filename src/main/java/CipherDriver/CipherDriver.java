@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class CipherDriver {
     private String[] args;
-    private CipherAbstractBase cipher;
+    private CipherAbstractTextBase cipher;
 
     public CipherDriver(final String[] cli_args) {
         args = cli_args;

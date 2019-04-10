@@ -1,7 +1,7 @@
 package Ciphers;
 
 
-public class AES extends CipherAbstractBase {
+public class AES extends CipherAbstractByteBase {
 
     @Override
     public boolean setKey(final String key) {
@@ -15,12 +15,12 @@ public class AES extends CipherAbstractBase {
     }
 
     @Override
-    public String encrypt(final String plaintext) {
-        return null;
+    public byte[] encrypt(final byte[] plaintext) {
+        return plaintext;
     }
 
     @Override
-    public String decrypt(final String cipherText) {
-        return null;
+    public byte[] decrypt(byte[] cipherText) {
+        return cipherText;
     }
 }
