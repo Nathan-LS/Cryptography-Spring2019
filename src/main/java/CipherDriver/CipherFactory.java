@@ -3,8 +3,12 @@ package CipherDriver;
 import Ciphers.*;
 
 public class CipherFactory {
-    static CipherAbstractTextBase getCipher(String cipher){
+    static CipherInterface getCipher(String cipher){
         switch (cipher) {
+            case "AES":
+                return new AES();
+            case "DES":
+                return new DES();
             case "PLF":
                 return new PlayFair();
             case "RTS":
