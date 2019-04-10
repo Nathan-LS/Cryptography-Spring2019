@@ -1,10 +1,10 @@
 package Ciphers.DESCases;
 
+import Ciphers.AbstractCipherMultiByteFile;
 import Ciphers.DES;
-import Ciphers.AbstractCipherMultiFile;
 
 
-abstract class AbstractDES extends AbstractCipherMultiFile {
+abstract class AbstractDES extends AbstractCipherMultiByteFile {
     @Override
     protected Class cipher_class() {
         return DES.class;

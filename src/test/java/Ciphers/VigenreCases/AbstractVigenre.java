@@ -1,10 +1,10 @@
 package Ciphers.VigenreCases;
 
-import Ciphers.AbstractCipherMultiFile;
+import Ciphers.AbstractCipherMultiTextFile;
 import Ciphers.Vigenre;
 
 
-abstract class AbstractVigenre extends AbstractCipherMultiFile {
+abstract class AbstractVigenre extends AbstractCipherMultiTextFile {
     @Override
     protected Class cipher_class() {
         return Vigenre.class;

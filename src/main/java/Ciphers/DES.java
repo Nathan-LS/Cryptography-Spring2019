@@ -1,7 +1,7 @@
 package Ciphers;
 
 
-public class DES extends CipherAbstractBase {
+public class DES extends CipherAbstractByteBase {
 
     @Override
     public boolean setKey(final String key){
@@ -15,12 +15,12 @@ public class DES extends CipherAbstractBase {
     }
 
     @Override
-    public String encrypt(final String plaintext) {
-        return null;
+    public byte[] encrypt(final byte[] plaintext) {
+        return plaintext;
     }
 
     @Override
-    public String decrypt(final String cipherText) {
-        return null;
+    public byte[] decrypt(final byte[] cipherText) {
+        return cipherText;
     }
 }

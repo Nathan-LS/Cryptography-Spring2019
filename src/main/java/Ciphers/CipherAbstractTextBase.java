@@ -1,11 +1,8 @@
 package Ciphers;
 
 
-public abstract class CipherAbstractBase implements CipherInterface {
+public abstract class CipherAbstractTextBase implements CipherInterface<String> {
     String CipherKey;
-
-    CipherAbstractBase() {
-    }
 
     @Override
     public boolean setKey(final String key) {

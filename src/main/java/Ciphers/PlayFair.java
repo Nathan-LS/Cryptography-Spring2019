@@ -1,6 +1,6 @@
 package Ciphers;
 
-public class PlayFair extends CipherAbstractBase {
+public class PlayFair extends CipherAbstractTextBase {
     private String Keyword = "";
     private String key = "";
     private char[][] matrixPF = new char[5][5];

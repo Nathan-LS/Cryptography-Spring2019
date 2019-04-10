@@ -2,7 +2,7 @@ package Ciphers;
 
 import static java.lang.Math.floorMod;
 
-public class Caesar extends CipherAbstractBase {
+public class Caesar extends CipherAbstractTextBase {
     private Integer intKey;
 
     @Override

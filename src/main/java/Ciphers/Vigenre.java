@@ -1,7 +1,7 @@
 package Ciphers;
 
 
-public class Vigenre extends CipherAbstractBase {
+public class Vigenre extends CipherAbstractTextBase {
     /* Globals */
     private String stringKey;
     private final Integer size = 26;
