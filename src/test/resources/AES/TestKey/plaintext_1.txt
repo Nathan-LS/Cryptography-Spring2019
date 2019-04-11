@@ -1,1 +1,0 @@
-This is a demo file for AES and DES test cases. We need to implement this test key later and the actual cipher.

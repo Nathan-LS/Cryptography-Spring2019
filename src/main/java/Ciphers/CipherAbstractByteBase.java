@@ -40,4 +40,8 @@ public abstract class CipherAbstractByteBase implements CipherInterface<byte[]> 
             return r;
         }
     }
+
+    public Integer blockSize(){
+        return 128;
+    }
 }

@@ -2,13 +2,15 @@ package Ciphers;
 
 import org.junit.jupiter.api.BeforeEach;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public abstract class AbstractCipherBaseTest<T extends CipherInterface> {
     T cipher;
 
     @BeforeEach
     void setUp() throws Exception {
         cipher = reflection_make();
-        cipher.setKey(key());
+        assertTrue(cipher.setKey(key()));
     }
 
     private T reflection_make() throws Exception {

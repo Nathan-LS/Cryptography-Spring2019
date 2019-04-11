@@ -79,7 +79,7 @@ public class AES extends CipherAbstractByteBase {
     @Override
     public byte[] decrypt(final byte[] cipherText) {
         byte[] encrypted = this.padder(cipherText, 128);
-        byte[] decrypted = new byte[encrypted.length];
+        byte[] decrypted = new byte[encrypted.length/2];
         try {
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
@@ -93,5 +93,9 @@ public class AES extends CipherAbstractByteBase {
             System.out.println("Error while decrypting: " + e.toString());
             return null;
         }
+    }
+
+    public Integer blockSize(){
+        return 128;
     }
 }
