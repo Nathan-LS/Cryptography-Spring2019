@@ -9,7 +9,7 @@ import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-public class AES extends CipherAbstractBase {
+public class AES extends CipherAbstractByteBase {
 
     private static SecretKeySpec secretKey;
     private static byte[] skey;
@@ -35,23 +35,17 @@ public class AES extends CipherAbstractBase {
                 skey = sha.digest(skey);
                 skey = Arrays.copyOf(skey, 16);
                 secretKey = new SecretKeySpec(skey, "AES");
+                return true;
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
+                return false;
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
+                return false;
             }
-
-            return true;
         }
-
-        /*if (key.length() != 16) {
-            System.out.println("Key length must be 16 characters.");
-            return false;
-        } else {
-            CipherKey = key;
-            return true;
-        }*/
     }
+
 
     /**
      * Encrypts a plaintext string
@@ -59,35 +53,45 @@ public class AES extends CipherAbstractBase {
      * @return - the encrypted ciphertext string
      */
     @Override
-    public String encrypt(final String plaintext) {
+    public byte[] encrypt(final byte[] plaintext) {
+        byte[] plain = this.padder(plaintext, 128);
+        byte[] encrypted = new byte[plain.length * 2];
         try {
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-
-            return Base64.getEncoder().encodeToString(cipher.doFinal(plaintext.getBytes("UTF-8")));
+            for(int i=0; i < plain.length; i+=16){
+                byte[] block = this.get_block(plain, 16, i);
+                byte[] encryptedBlock = cipher.doFinal(block);
+                System.arraycopy(encryptedBlock, 0, encrypted, i*2, 32);
+            }
+            return encrypted;
         } catch (Exception e ) {
             System.out.println("Error while encrypting: " + e.toString());
+            return null;
         }
-
-        return null;
     }
 
     /**
      * Decrypts a string of ciphertext
-     * @param cipherText - the ciphertext
-     * @return - the plaintext
+     * @param cipherText - the ciphertext byte array
+     * @return - the plaintext byte array
      */
     @Override
-    public String decrypt(final String cipherText) {
+    public byte[] decrypt(final byte[] cipherText) {
+        byte[] encrypted = this.padder(cipherText, 128);
+        byte[] decrypted = new byte[encrypted.length];
         try {
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
-            
-            return new String(cipher.doFinal(Base64.getDecoder().decode(cipherText)));
+            for(int i=0; i < encrypted.length; i+=32){
+                byte[] block = this.get_block(encrypted, 32, i);
+                byte[] decryptedBlock = cipher.doFinal(block);
+                System.arraycopy(decryptedBlock, 0, decrypted, i/2, 16);
+            }
+            return decrypted;
         } catch (Exception e) {
             System.out.println("Error while decrypting: " + e.toString());
+            return null;
         }
-
-        return null;
     }
 }

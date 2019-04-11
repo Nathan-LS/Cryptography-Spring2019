@@ -13,7 +13,9 @@ public class CipherDriver {
     public CipherDriver(final String[] cli_args) {
         args = cli_args;
         if (args.length != 5) {
-            System.out.println(String.format("This program requires 5 arguments, but %s were given.", args.length));
+            System.out.println(String.format("This program requires 5 arguments, but %s were given." +
+                    "\nUsage: <CIPHER NAME> <KEY> <ENC/DEC> <INPUT FILE> <OUTPUT FILE>" +
+                    "\nEx: AES 0123456789abcdef ENC input.png output.png", args.length));
             System.exit(1);
         }
     }
