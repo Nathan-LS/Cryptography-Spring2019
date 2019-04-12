@@ -1,6 +1,6 @@
 package Ciphers;
 
-public class ThreeRotorEnigmaEC extends CipherAbstractBase {
+public class ThreeRotorEnigmaEC extends CipherAbstractTextBase {
 
     @Override
     public String encrypt(final String plaintext) { //TODO

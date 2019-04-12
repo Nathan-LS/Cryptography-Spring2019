@@ -1,10 +1,10 @@
 package Ciphers.AESCases;
 
 import Ciphers.AES;
-import Ciphers.AbstractCipherMultiFile;
+import Ciphers.AbstractCipherMultiByteFile;
 
 
-abstract class AbstractAES extends AbstractCipherMultiFile {
+abstract class AbstractAES extends AbstractCipherMultiByteFile {
     @Override
     protected Class cipher_class() {
         return AES.class;

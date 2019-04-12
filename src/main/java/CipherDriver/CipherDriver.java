@@ -8,12 +8,14 @@ import java.io.IOException;
 
 public class CipherDriver {
     private String[] args;
-    private CipherAbstractBase cipher;
+    private CipherInterface cipher;
 
     public CipherDriver(final String[] cli_args) {
         args = cli_args;
         if (args.length != 5) {
-            System.out.println(String.format("This program requires 5 arguments, but %s were given.", args.length));
+            System.out.println(String.format("This program requires 5 arguments, but %s were given." +
+                    "\nUsage: <CIPHER NAME> <KEY> <ENC/DEC> <INPUT FILE> <OUTPUT FILE>" +
+                    "\nEx: AES 0123456789abcdef ENC input.png output.png", args.length));
             System.exit(1);
         }
     }
@@ -32,11 +34,21 @@ public class CipherDriver {
         setKey(args[1]);
         switch (args[2]) {
             case "ENC":
-                writeFile(new File(args[4]), cipher.encrypt(readFile(new File(args[3]))));
+                if (cipher instanceof CipherAbstractByteBase){
+                    writeFileByte(new File(args[4]), ((CipherAbstractByteBase)cipher).encrypt(readFileByte(new File(args[3]))));
+                }
+                else{
+                    writeFileString(new File(args[4]), ((CipherAbstractTextBase)cipher).encrypt(readFileString(new File(args[3]))));
+                }
                 System.out.println(String.format("Successfully encrypted the contents of %s to: %s", args[3], args[4]));
                 break;
             case "DEC":
-                writeFile(new File(args[4]), cipher.decrypt(readFile(new File(args[3]))));
+                if (cipher instanceof CipherAbstractByteBase){
+                    writeFileByte(new File(args[4]), ((CipherAbstractByteBase)cipher).decrypt(readFileByte(new File(args[3]))));
+                }
+                else{
+                    writeFileString(new File(args[4]), ((CipherAbstractTextBase)cipher).decrypt(readFileString(new File(args[3]))));
+                }
                 System.out.println(String.format("Successfully decrypted the contents of %s to: %s", args[3], args[4]));
                 break;
             default:
@@ -45,12 +57,21 @@ public class CipherDriver {
         }
     }
 
-    protected String readFile(final File inputFile) throws IOException {
+    protected String readFileString(final File inputFile) throws IOException {
         return FileUtils.readFileToString(inputFile, "utf-8");
     }
 
-    protected void writeFile(final File outputFile, final String content) throws IOException {
+    protected void writeFileString(final File outputFile, final String content) throws IOException {
         FileUtils.writeStringToFile(outputFile, content, "utf-8");
     }
+
+    protected byte[] readFileByte(final File inputFile) throws IOException {
+        return FileUtils.readFileToByteArray(inputFile);
+    }
+
+    protected void writeFileByte(final File outputFile, final byte[] content) throws IOException {
+        FileUtils.writeByteArrayToFile(outputFile, content);
+    }
+
 
 }
