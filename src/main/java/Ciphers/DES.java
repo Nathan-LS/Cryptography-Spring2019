@@ -60,7 +60,7 @@ public class DES extends CipherAbstractBase {
     public String encrypt(final String plaintext) {
         
         // Taking file in locally
-        File file = new File("/Users/hmedina/TerminalProjects/testingCodes/Cryptography/Cryptography-Spring2019/src/test/resources/DES/TestKey/plaintext_1.txt");
+        File file = new File("./src/test/resources/DES/TestKey/plaintext_1.txt");
         byte[] byteFile = new byte[(int)file.length()];
 
         try {
@@ -74,12 +74,14 @@ public class DES extends CipherAbstractBase {
             System.out.println("bytefile length = " + byteFile.length);
             System.out.println("padder worked; plain length " + plain.length);
             
-            byte[] encrypted = new byte[byteFile.length * 2];
+            byte[] encrypted = new byte[plain.length];
             for(int i=0; i < plain.length; i+=8){
                 byte[] block = this.get_block(plain, 8, i);
                 byte[] encryptedBlock = cipher.doFinal(block);
-                System.arraycopy(encryptedBlock, 0, encrypted, i*2, 8);
+                System.arraycopy(encryptedBlock, 0, encrypted, i, 8);
                 System.out.println(new String(Base64.getEncoder().encode(encryptedBlock)));
+                System.out.println(new String(Base64.getEncoder().encode(encrypted)));
+
             }
 
             // encrypted data needs to be encoded in base64 before writing to file
@@ -94,7 +96,7 @@ public class DES extends CipherAbstractBase {
     public String decrypt(final String cipherText) {
         
         // Taking file in locally
-        File file = new File("/Users/hmedina/TerminalProjects/testingCodes/Cryptography/Cryptography-Spring2019/src/test/resources/DES/TestKey/encrypt.txt");
+        File file = new File("./src/test/resources/DES/TestKey/encrypt.txt");
         byte[] byteFile = new byte[(int)file.length()];
 
         try {
@@ -108,16 +110,16 @@ public class DES extends CipherAbstractBase {
             System.out.println("bytefile length = " + byteFile.length);
             System.out.println("padder worked; plain length " + plain.length);
 
-            byte[] encrypted = new byte[byteFile.length * 2];
+            byte[] encrypted = new byte[plain.length];
             // by 16 bytes to skip over weird data
-            for(int i=0; i < plain.length; i+=16){
+            for(int i=0; i < plain.length; i+=8){
                 byte[] block = this.get_block(plain, 8, i);
 
                 byte[] encryptedBlock = cipher.doFinal(block);
                 //I'm looking at each block and it should be printing it to output properly
                 System.out.println(new String(encryptedBlock));
-                System.arraycopy(encryptedBlock, 0, encrypted, i*2, 8);
-                System.out.println("ENCRYPYP" + new String(encrypted));
+                System.arraycopy(encryptedBlock, 0, encrypted, i, 8);
+                System.out.println("DECRYPTED TEXT:: " + new String(encrypted));
             }
             return new String(encrypted);
         } catch (Exception e ) {
