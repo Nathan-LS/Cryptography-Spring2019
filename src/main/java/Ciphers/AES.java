@@ -4,7 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -54,15 +53,15 @@ public class AES extends CipherAbstractByteBase {
      */
     @Override
     public byte[] encrypt(final byte[] plaintext) {
-        byte[] plain = this.padder(plaintext, 128);
-        byte[] encrypted = new byte[plain.length * 2];
+        byte[] plain = this.padder(plaintext, 16);
+        byte[] encrypted = new byte[plain.length];
         try {
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
             for(int i=0; i < plain.length; i+=16){
                 byte[] block = this.get_block(plain, 16, i);
                 byte[] encryptedBlock = cipher.doFinal(block);
-                System.arraycopy(encryptedBlock, 0, encrypted, i*2, 32);
+                System.arraycopy(encryptedBlock, 0, encrypted, i, 16);
             }
             return encrypted;
         } catch (Exception e ) {
@@ -78,17 +77,16 @@ public class AES extends CipherAbstractByteBase {
      */
     @Override
     public byte[] decrypt(final byte[] cipherText) {
-        byte[] encrypted = this.padder(cipherText, 128);
-        byte[] decrypted = new byte[encrypted.length/2];
+        byte[] decrypted = new byte[cipherText.length];
         try {
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
+            Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
-            for(int i=0; i < encrypted.length; i+=32){
-                byte[] block = this.get_block(encrypted, 32, i);
+            for(int i=0; i < cipherText.length; i+=16){
+                byte[] block = this.get_block(cipherText, 16, i);
                 byte[] decryptedBlock = cipher.doFinal(block);
-                System.arraycopy(decryptedBlock, 0, decrypted, i/2, 16);
+                System.arraycopy(decryptedBlock, 0, decrypted, i, 16);
             }
-            return decrypted;
+            return padderStrip(decrypted);
         } catch (Exception e) {
             System.out.println("Error while decrypting: " + e.toString());
             return null;
@@ -96,6 +94,6 @@ public class AES extends CipherAbstractByteBase {
     }
 
     public Integer blockSize(){
-        return 128;
+        return 16;
     }
 }

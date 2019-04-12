@@ -21,6 +21,21 @@ public abstract class CipherAbstractByteBase implements CipherInterface<byte[]> 
         return returnArray;
     }
 
+    public byte[] padderStrip(final byte[] inputBytes){
+        int i = inputBytes.length -1;
+        while (i != 0){
+            if (inputBytes[i] != 0){
+                i++;
+                break;
+            }else{
+                i--;
+            }
+        }
+        byte[] r = new byte[i];
+        System.arraycopy(inputBytes, 0, r, 0, i);
+        return r;
+    }
+
 
     /**
      * Gets a block of bytes of length blockSize from an input byte array.
@@ -42,6 +57,6 @@ public abstract class CipherAbstractByteBase implements CipherInterface<byte[]> 
     }
 
     public Integer blockSize(){
-        return 128;
+        return 16;
     }
 }

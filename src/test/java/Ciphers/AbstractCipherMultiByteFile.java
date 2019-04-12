@@ -64,7 +64,7 @@ public abstract class AbstractCipherMultiByteFile extends AbstractCipherBaseTest
                     System.err.println(String.format("WARNING: Encryption and decryption test case files should not have the same exact content unless the encryption results in the plaintext. Double check your test case file: %s", plaintextFileName));
                 }
                 assertArrayEquals(cipher.padder(encryptedBytes, cipher.blockSize()), cipher.encrypt(plainBytes), "Encrypt: " + plaintextFileName);
-                assertArrayEquals(cipher.padder(plainBytes, cipher.blockSize()), cipher.decrypt(encryptedBytes), "Decrypt: " + plaintextFileName);
+                assertArrayEquals(plainBytes, cipher.decrypt(encryptedBytes), "Decrypt: " + plaintextFileName);
                 test_counter++;
             }
         }
