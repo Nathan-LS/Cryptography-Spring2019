@@ -12,7 +12,7 @@ import java.util.Base64;
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 
-public class DES extends CipherAbstractBase {
+public class DES extends CipherAbstractByteBase {
 
     // global objects for enc/dec
     private byte des_key[] = new byte[8];
@@ -56,16 +56,14 @@ public class DES extends CipherAbstractBase {
 
         return true;
     }
+
     @Override
-    public String encrypt(final String plaintext) {
-        
-        // Taking file in locally
-        File file = new File("./src/test/resources/DES/TestKey/plaintext_1.txt");
-        byte[] byteFile = new byte[(int)file.length()];
+    public byte[] encrypt(final byte[] plaintext){
+        byte[] byteFile;
 
         try {
             //reading plain file into binary
-            byteFile = FileUtils.readFileToByteArray(file);
+            byteFile = plaintext;
             Cipher cipher = Cipher.getInstance("DES/ECB/NoPadding");
             cipher.init(Cipher.ENCRYPT_MODE, keyKey);
 
@@ -85,7 +83,7 @@ public class DES extends CipherAbstractBase {
             }
 
             // encrypted data needs to be encoded in base64 before writing to file
-            return new String(Base64.getEncoder().encode(encrypted));
+            return encrypted;
         } catch (Exception e ) {
             System.out.println("Error while encrypting: " + e.toString());
             return null;
@@ -93,15 +91,12 @@ public class DES extends CipherAbstractBase {
     }
 
     @Override
-    public String decrypt(final String cipherText) {
-        
-        // Taking file in locally
-        File file = new File("./src/test/resources/DES/TestKey/encrypt.txt");
-        byte[] byteFile = new byte[(int)file.length()];
+    public byte[] decrypt(byte[] cipherText) {
+        byte[] byteFile;
 
         try {
             // encrypted data needs to be decoded from base64 before decrypting
-            byteFile = Base64.getDecoder().decode(FileUtils.readFileToString(file));
+            byteFile = cipherText;
             Cipher cipher = Cipher.getInstance("DES/ECB/NoPadding");
             cipher.init(Cipher.DECRYPT_MODE, keyKey);
 
@@ -121,7 +116,7 @@ public class DES extends CipherAbstractBase {
                 System.arraycopy(encryptedBlock, 0, encrypted, i, 8);
                 System.out.println("DECRYPTED TEXT:: " + new String(encrypted));
             }
-            return new String(encrypted);
+            return encrypted;
         } catch (Exception e ) {
             System.out.println("Error while encrypting: " + e.toString());
             return null;
@@ -173,35 +168,6 @@ public class DES extends CipherAbstractBase {
             return (char)((character - 97) + 10);	
         /* Invalid character */
         else return 'z';
-    }
-
-    public byte[] padder(final byte[] inputBytes, Integer length){
-        int size;
-        if (inputBytes.length <= length){
-            size = length;
-        }else{
-            size = (int)Math.ceil((double)inputBytes.length / length) * length;
-        }
-        byte[] returnArray = new byte[size];
-        for (int i = 0; i < inputBytes.length; i++){
-            returnArray[i] = inputBytes[i];
-        }
-        for (int i = inputBytes.length; i <size; i++){
-            returnArray[i] = 0;
-        }
-        return returnArray;
-    }
-
-    public byte[] get_block(final byte[] inputBytes, int blockSize, int currentIndex){
-        if (currentIndex + blockSize > inputBytes.length){
-            throw new IndexOutOfBoundsException("Attempting get a block that would be out of bounds. Check your index or padding function.");
-        }else{
-            byte[] r = new byte[blockSize];
-            for (int i = 0; i < blockSize; i++){
-                r[i] = inputBytes[i+currentIndex];
-            }
-            return r;
-        }
     }
  }
 

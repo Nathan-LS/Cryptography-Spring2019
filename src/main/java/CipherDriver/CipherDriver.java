@@ -22,6 +22,7 @@ public class CipherDriver {
 
     protected void setKey(final String key) {
         if (!cipher.setKey(key)) {
+            System.out.println("Something went wrong when setting the key.");
             System.exit(1);
         }
     }
