@@ -1,18 +1,23 @@
 package Ciphers;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import java.io.File;
+import java.io.DataInputStream;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.nio.file.Files;
-import java.util.Base64;
 import java.util.Vector;
+import java.util.Base64;
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 
-public class DES extends CipherAbstractBase {
+public class DES extends CipherAbstractByteBase {
 
     // global objects for enc/dec
-    byte des_key[] = new byte[8];
-    SecretKey keyKey;
-    Cipher cipher;
+    private byte des_key[] = new byte[8];
+    private static SecretKey keyKey;
+    private static Cipher cipher;
 
     @Override
     public boolean setKey(final String key) {
@@ -21,23 +26,27 @@ public class DES extends CipherAbstractBase {
             System.out.println("Key length must be 16 characters.");
             return false;
         }
+        //Turning 16 bit key to 8 bit key
+        int keyIndex = 0; /* The key index */
         char[] keyArray = key.toCharArray();
-        System.out.println(keyArray);
-
-        int keyIndex = 0;        /* The key index */
-
-        int desKeyIndex = 0;        /* The DES key index */
-
-        /* Go through the entire key character by character */
+        int desKeyIndex = 0; /* The DES key index */
+        try {
         while (desKeyIndex != 8) {
             /* Convert the key if the character is valid */
-            if ((this.des_key[desKeyIndex] = (byte) twoCharToHexByte(keyArray[keyIndex],
+            if ((des_key[desKeyIndex] = (byte) twoCharToHexByte(keyArray[keyIndex],
                     keyArray[keyIndex + 1])) == 'z')
                 return false;
 
-            keyIndex += 2;            /* Go to the second pair of characters */
-            ++desKeyIndex;            /* Increment the index */
+            keyIndex += 2; /* Go to the second pair of characters */
+            ++desKeyIndex; /* Increment the index */
         }
+            this.keyKey = new SecretKeySpec(des_key, "DES");
+            System.out.println("DES key bit length ::: " + des_key.length);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        //     this.cipher = Cipher.getInstance("DES");
 
         System.out.print("DES KEY: ");
         for (keyIndex = 0; keyIndex < 8; ++keyIndex) {
@@ -45,150 +54,73 @@ public class DES extends CipherAbstractBase {
         }
         System.out.print("\n");
 
-        try {
-            this.keyKey = new SecretKeySpec(this.des_key, "DES");
-            this.cipher = Cipher.getInstance("DES");
-        } catch (Exception e) {
-            System.out.println("Error on crypto Key init.\n" + e);
-        }
-
         return true;
     }
+
     @Override
-    public String encrypt(final String plaintext) {
-        byte[] byteFile = {};
+    public byte[] encrypt(final byte[] plaintext){
+        byte[] byteFile;
+
         try {
-            byteFile = Files.readAllBytes(new File(
-                    "/Users/hmedina/TerminalProjects/testingCodes/Cryptography/Cryptography-Spring2019/src/test/resources/DES/TestKey/plaintext_1.txt")
-                            .toPath());
-            // byteFile = new String(byteFile, "UTF-8").getBytes();
-            // System.out.println("KEY USED IN ENC ::: " + this.keyKey);
-            this.cipher = Cipher.getInstance("DES/ECB/NoPadding");
-            this.cipher.init(Cipher.ENCRYPT_MODE, this.keyKey);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            //reading plain file into binary
+            byteFile = plaintext;
+            Cipher cipher = Cipher.getInstance("DES/ECB/NoPadding");
+            cipher.init(Cipher.ENCRYPT_MODE, keyKey);
 
-        System.out.println("Number of BITS in file ::: " + byteFile.length);
-        System.out.println("byteFile in String ::: " + new String(byteFile));
+            //padding only the necessary number of bytes
+            byte[] plain = this.padder(byteFile, byteFile.length+(8-byteFile.length%8));
+            System.out.println("bytefile length = " + byteFile.length);
+            System.out.println("padder worked; plain length " + plain.length);
+            
+            byte[] encrypted = new byte[plain.length];
+            for(int i=0; i < plain.length; i+=8){
+                byte[] block = this.get_block(plain, 8, i);
+                byte[] encryptedBlock = cipher.doFinal(block);
+                System.arraycopy(encryptedBlock, 0, encrypted, i, 8);
+                System.out.println(new String(Base64.getEncoder().encode(encryptedBlock)));
+                System.out.println(new String(Base64.getEncoder().encode(encrypted)));
 
-        // Padding values
-        int padding = byteFile.length % 8;
-        if (padding != 0) {
-            byte[] paddedByteFile = new byte[byteFile.length + (8 % padding)];
-            for (int i = 0; i < byteFile.length; ++i) {
-                paddedByteFile[i] = byteFile[i];
             }
-            byteFile = paddedByteFile;
-            System.out.println("Number of BITS in file after PADDING::: " + byteFile.length);
-            System.out.println("byteFile in String ::: " + new String(byteFile));
-        }
-        Vector<byte[]> blocks = new Vector<byte[]>();
-        byte[] byteBlock = new byte[8];
-        int segment = 0;
-        int index = 0;
-        while (segment != byteFile.length) {
-            if (index == 8) {
-                blocks.add(byteBlock.clone());
-                System.out.println("Block Index " + (segment / 8) + " ::: " + blocks.lastElement());
-                index = 0;
-            }
-            byteBlock[index] = byteFile[segment];
-            index++;
-            segment++;
-        }
-        // One last round of blocks to clone
-        blocks.add(byteBlock.clone());
-        byte[] encryptedData = {};
-        String encryptedText = "";
-        for (int i = 0; i < blocks.size(); ++i) {
-            try {
-                System.out.println("block index " + i + " :: ");
-                System.out.println("plain block :: " + new String(blocks.get(i)));
-                System.out.println("LENGTH OF THE BYTEs +++ " + blocks.get(i).length);
-                encryptedData = this.cipher.update(blocks.get(i));
-                System.out.println("encrypted block :: " + new String(encryptedData));
-                System.out.println("BASE64 encoding block :: " + Base64.getEncoder().encodeToString(encryptedData));
-                encryptedText += new String(encryptedData, "UTF-8");
-                // encryptedText += Base64.getEncoder().encodeToString(encryptedData);
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            // encrypted data needs to be encoded in base64 before writing to file
+            return encrypted;
+        } catch (Exception e ) {
+            System.out.println("Error while encrypting: " + e.toString());
+            return null;
         }
-        try {
-            this.cipher.doFinal();
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return encryptedText;
     }
 
     @Override
-    public String decrypt(final String cipherText) {
-        byte[] byteFile = {};
-        try {
-            byteFile = Files.readAllBytes(new File(
-                    "/Users/hmedina/TerminalProjects/testingCodes/Cryptography/Cryptography-Spring2019/src/test/resources/DES/TestKey/encrypt_1")
-                            .toPath());
-            System.out.println("KEY USED IN DEC ::: " + this.keyKey);
-            this.cipher = Cipher.getInstance("DES/ECB/NoPadding");
-            this.cipher.init(Cipher.DECRYPT_MODE, this.keyKey);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        byteFile = cipherText.getBytes();
-        System.out.println("Number of BITS in file ::: " + byteFile.length);
-        System.out.println("byteFile in String ::: " + new String(byteFile));
+    public byte[] decrypt(byte[] cipherText) {
+        byte[] byteFile;
 
-        // Padding values
-        int padding = byteFile.length % 8;
-        if (padding != 0) {
-            byte[] paddedByteFile = new byte[byteFile.length + (8 % padding)];
-            for (int i = 0; i < byteFile.length; ++i) {
-                paddedByteFile[i] = byteFile[i];
-            }
-            byteFile = paddedByteFile;
-            System.out.println("Number of BITS in file after PADDING::: " + byteFile.length);
-            System.out.println("byteFile in String ::: " + new String(byteFile));
-        }
-        Vector<byte[]> blocks = new Vector<byte[]>();
-        byte[] byteBlock = new byte[8];
-        int segment = 0;
-        int index = 0;
-        while (segment != byteFile.length) {
-            if (index == 8) {
-                blocks.add(byteBlock.clone());
-                System.out.println("Block Index " + (segment / 8) + " ::: " + blocks.lastElement());
-                index = 0;
-            }
-            byteBlock[index] = byteFile[segment];
-            index++;
-            segment++;
-        }
-        // One last round of blocks to clone
-        blocks.add(byteBlock.clone());
-        byte[] encryptedData = {};
-        String encryptedText = "";
-        for (int i = 0; i < blocks.size(); ++i) {
-            try {
-                System.out.println("block index " + i + " :: ");
-                System.out.println("encrypted block :: " + new String(blocks.get(i)));
-                encryptedData = this.cipher.update(blocks.get(i));
-                System.out.println("decrypted block :: " + new String(encryptedData, "UTF-8"));
-                encryptedText += new String(encryptedData, "UTF-8");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
         try {
-            this.cipher.doFinal();
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            // encrypted data needs to be decoded from base64 before decrypting
+            byteFile = cipherText;
+            Cipher cipher = Cipher.getInstance("DES/ECB/NoPadding");
+            cipher.init(Cipher.DECRYPT_MODE, keyKey);
+
+            //padding only the necessary number of bytes
+            byte[] plain = this.padder(byteFile, byteFile.length+(8-byteFile.length%8));
+            System.out.println("bytefile length = " + byteFile.length);
+            System.out.println("padder worked; plain length " + plain.length);
+
+            byte[] encrypted = new byte[plain.length];
+            // by 16 bytes to skip over weird data
+            for(int i=0; i < plain.length; i+=8){
+                byte[] block = this.get_block(plain, 8, i);
+
+                byte[] encryptedBlock = cipher.doFinal(block);
+                //I'm looking at each block and it should be printing it to output properly
+                System.out.println(new String(encryptedBlock));
+                System.arraycopy(encryptedBlock, 0, encrypted, i, 8);
+                System.out.println("DECRYPTED TEXT:: " + new String(encrypted));
+            }
+            return encrypted;
+        } catch (Exception e ) {
+            System.out.println("Error while encrypting: " + e.toString());
+            return null;
         }
-        return encryptedText;
     }
 
     /**

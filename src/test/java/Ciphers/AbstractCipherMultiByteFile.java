@@ -1,6 +1,7 @@
 package Ciphers;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,19 +14,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public abstract class AbstractCipherMultiFile extends AbstractCipherBaseTest {
-    /**
-     * Extend this class to test multiple files in a directory. You must override:
-     * key                      The key to use for the encryption and decryption.
-     * cipher_class             The class you wish to run the test on. Example Caesar.class
-     * <p>
-     * You must also create a directory matching the cipher class name you are testing and the key used for your cases in src/test/resources ex: src/test/resources/Caesar/key
-     * The files will automatically be picked up from this folder. You must create 2 text files for every test case matching the exact prefixes:
-     * plaintext_   ex: plaintext_case1.txt     file to encrypt the contents of
-     * encrypted_   ex: encrypted_case1.txt     assert file that the string in plaintext_case1.txt must match after being encrypted.
-     */
-    private Path testResource;
-    private List<File> TestFiles;
+public abstract class AbstractCipherMultiByteFile extends AbstractCipherBaseTest<CipherAbstractByteBase> {
+    protected Path testResource;
+    protected List<File> TestFiles;
 
     private String TestDirName() {
         return cipher_class().getSimpleName();
@@ -67,13 +58,13 @@ public abstract class AbstractCipherMultiFile extends AbstractCipherBaseTest {
                     return;
                 }
                 System.out.println(String.format("Testing encryption and decryption for file: '%s' with key '%s' using the %s cipher.", plaintextFileName, key(), cipher_class().getSimpleName()));
-                final String plainText = FileUtils.readFileToString(f, "utf-8");
-                final String encryptedText = FileUtils.readFileToString(encryptedFile, "utf-8");
-                if (plainText.equals(encryptedText)) {
+                final byte[] plainBytes = FileUtils.readFileToByteArray(f);
+                final byte[] encryptedBytes = FileUtils.readFileToByteArray(encryptedFile);
+                if (Arrays.equals(plainBytes, encryptedBytes)) {
                     System.err.println(String.format("WARNING: Encryption and decryption test case files should not have the same exact content unless the encryption results in the plaintext. Double check your test case file: %s", plaintextFileName));
                 }
-                assertEquals(helper_newLine(encryptedText), helper_newLine(cipher.encrypt(plainText)), "Encrypt: " + plaintextFileName);
-                assertEquals(helper_newLine(plainText), helper_newLine(cipher.decrypt(encryptedText)), "Decrypt: " + plaintextFileName);
+                assertArrayEquals(cipher.padder(encryptedBytes, cipher.blockSize()), cipher.encrypt(plainBytes), "Encrypt: " + plaintextFileName);
+                assertArrayEquals(plainBytes, cipher.decrypt(encryptedBytes), "Decrypt: " + plaintextFileName);
                 test_counter++;
             }
         }

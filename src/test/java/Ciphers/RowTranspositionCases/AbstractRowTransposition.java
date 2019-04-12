@@ -1,10 +1,10 @@
 package Ciphers.RowTranspositionCases;
 
-import Ciphers.AbstractCipherMultiFile;
+import Ciphers.AbstractCipherMultiTextFile;
 import Ciphers.RowTransposition;
 
 
-abstract class AbstractRowTransposition extends AbstractCipherMultiFile {
+abstract class AbstractRowTransposition extends AbstractCipherMultiTextFile {
     @Override
     protected Class cipher_class() {
         return RowTransposition.class;

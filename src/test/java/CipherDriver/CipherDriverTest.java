@@ -40,12 +40,12 @@ class CipherDriverTest {
 
     @Test
     void readFile() throws Exception {
-        assertEquals(inputString, driver.readFile(inputFile));
+        assertEquals(inputString, driver.readFileString(inputFile));
     }
 
     @Test
     void writeFile() throws Exception {
-        driver.writeFile(outFile, inputString);
+        driver.writeFileString(outFile, inputString);
         assertEquals(inputString, FileUtils.readFileToString(outFile, "utf-8"));
     }
 }

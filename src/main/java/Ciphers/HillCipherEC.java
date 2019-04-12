@@ -1,6 +1,6 @@
 package Ciphers;
 
-public class HillCipherEC extends CipherAbstractBase {
+public class HillCipherEC extends CipherAbstractTextBase {
 
     @Override
     public String encrypt(final String plaintext) { //TODO

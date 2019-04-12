@@ -1,9 +1,9 @@
 package Ciphers;
 
-public interface CipherInterface {
+public interface CipherInterface<T> {
     boolean setKey(final String key);
 
-    String encrypt(final String plaintext);
+    T encrypt(final T plaintext);
 
-    String decrypt(final String cipherText);
+    T decrypt(final T cipherText);
 }

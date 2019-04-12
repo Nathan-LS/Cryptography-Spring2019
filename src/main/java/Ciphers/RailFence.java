@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public class RailFence extends CipherAbstractBase {
+public class RailFence extends CipherAbstractTextBase {
     protected Integer intKey;
     protected Integer row = 0;
     protected Integer col = 0;
