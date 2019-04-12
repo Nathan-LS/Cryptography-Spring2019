@@ -8,6 +8,7 @@
   - Stephen S
   - Jasper C
   - Allen S
+  - Hector M
 
 ### Programming Language: Java
 
