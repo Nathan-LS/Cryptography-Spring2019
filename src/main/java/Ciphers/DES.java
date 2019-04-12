@@ -73,6 +73,7 @@ public class DES extends CipherAbstractBase {
                 byte[] block = this.get_block(plain, 8, i);
                 byte[] encryptedBlock = cipher.doFinal(block);
                 System.arraycopy(encryptedBlock, 0, encrypted, i*2, 8);
+                System.out.println(new String(Base64.getEncoder().encode(encryptedBlock)));
             }
             return new String(Base64.getEncoder().encode(encrypted));
         } catch (Exception e ) {
@@ -94,10 +95,13 @@ public class DES extends CipherAbstractBase {
             System.out.println("bytefile length = " + byteFile.length);
             System.out.println("padder worked; plain length " + plain.length);
             byte[] encrypted = new byte[byteFile.length * 2];
-            for(int i=0; i < plain.length; i+=8){
+            for(int i=0; i < plain.length; i+=16){
                 byte[] block = this.get_block(plain, 8, i);
                 byte[] encryptedBlock = cipher.doFinal(block);
+                //I'm looking at each block and it should be printing it to output properly
+                System.out.println(new String(encryptedBlock));
                 System.arraycopy(encryptedBlock, 0, encrypted, i*2, 8);
+                System.out.println("ENCRYPYP" + new String(encrypted));
             }
             return new String(encrypted);
         } catch (Exception e ) {
