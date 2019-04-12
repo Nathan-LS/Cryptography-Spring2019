@@ -58,16 +58,22 @@ public class DES extends CipherAbstractBase {
     }
     @Override
     public String encrypt(final String plaintext) {
+        
+        // Taking file in locally
         File file = new File("/Users/hmedina/TerminalProjects/testingCodes/Cryptography/Cryptography-Spring2019/src/test/resources/DES/TestKey/plaintext_1.txt");
         byte[] byteFile = new byte[(int)file.length()];
 
         try {
+            //reading plain file into binary
             byteFile = FileUtils.readFileToByteArray(file);
             Cipher cipher = Cipher.getInstance("DES/ECB/NoPadding");
             cipher.init(Cipher.ENCRYPT_MODE, keyKey);
+
+            //padding only the necessary number of bytes
             byte[] plain = this.padder(byteFile, byteFile.length+(8-byteFile.length%8));
             System.out.println("bytefile length = " + byteFile.length);
             System.out.println("padder worked; plain length " + plain.length);
+            
             byte[] encrypted = new byte[byteFile.length * 2];
             for(int i=0; i < plain.length; i+=8){
                 byte[] block = this.get_block(plain, 8, i);
@@ -75,6 +81,8 @@ public class DES extends CipherAbstractBase {
                 System.arraycopy(encryptedBlock, 0, encrypted, i*2, 8);
                 System.out.println(new String(Base64.getEncoder().encode(encryptedBlock)));
             }
+
+            // encrypted data needs to be encoded in base64 before writing to file
             return new String(Base64.getEncoder().encode(encrypted));
         } catch (Exception e ) {
             System.out.println("Error while encrypting: " + e.toString());
@@ -84,19 +92,27 @@ public class DES extends CipherAbstractBase {
 
     @Override
     public String decrypt(final String cipherText) {
+        
+        // Taking file in locally
         File file = new File("/Users/hmedina/TerminalProjects/testingCodes/Cryptography/Cryptography-Spring2019/src/test/resources/DES/TestKey/encrypt.txt");
         byte[] byteFile = new byte[(int)file.length()];
 
         try {
+            // encrypted data needs to be decoded from base64 before decrypting
             byteFile = Base64.getDecoder().decode(FileUtils.readFileToString(file));
             Cipher cipher = Cipher.getInstance("DES/ECB/NoPadding");
             cipher.init(Cipher.DECRYPT_MODE, keyKey);
+
+            //padding only the necessary number of bytes
             byte[] plain = this.padder(byteFile, byteFile.length+(8-byteFile.length%8));
             System.out.println("bytefile length = " + byteFile.length);
             System.out.println("padder worked; plain length " + plain.length);
+
             byte[] encrypted = new byte[byteFile.length * 2];
+            // by 16 bytes to skip over weird data
             for(int i=0; i < plain.length; i+=16){
                 byte[] block = this.get_block(plain, 8, i);
+
                 byte[] encryptedBlock = cipher.doFinal(block);
                 //I'm looking at each block and it should be printing it to output properly
                 System.out.println(new String(encryptedBlock));
