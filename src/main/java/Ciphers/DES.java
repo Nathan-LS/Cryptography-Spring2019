@@ -33,11 +33,11 @@ public class DES extends CipherAbstractByteBase {
         try {
         while (desKeyIndex != 8) {
             /* Convert the key if the character is valid */
-            System.out.println(keyArray[keyIndex] + " " + keyArray[keyIndex + 1]);
+            //System.out.println(keyArray[keyIndex] + " " + keyArray[keyIndex + 1]);
 
             /* NOTE: We are getting a return value of z, so false is returned */
             if ((des_key[desKeyIndex] = (byte)twoCharToHexByte(keyArray[keyIndex], keyArray[keyIndex + 1])) == 'z') {
-                System.out.println("twoCharToHexByte returns " + des_key[desKeyIndex] + ", false will be returned.");
+                //System.out.println("twoCharToHexByte returns " + des_key[desKeyIndex] + ", false will be returned.");
                 return false;
             }
 
@@ -46,7 +46,7 @@ public class DES extends CipherAbstractByteBase {
             ++desKeyIndex; /* Increment the index */
         }
             this.keyKey = new SecretKeySpec(des_key, "DES");
-            System.out.println("DES key bit length ::: " + des_key.length);
+            //System.out.println("DES key bit length ::: " + des_key.length);
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -73,17 +73,17 @@ public class DES extends CipherAbstractByteBase {
             cipher.init(Cipher.ENCRYPT_MODE, keyKey);
 
             //padding only the necessary number of bytes
-            byte[] plain = this.padder(byteFile, byteFile.length+(8-byteFile.length%8));
-            System.out.println("bytefile length = " + byteFile.length);
-            System.out.println("padder worked; plain length " + plain.length);
+            byte[] plain = this.padder(byteFile, 8);
+            //System.out.println("bytefile length = " + byteFile.length);
+            //System.out.println("padder worked; plain length " + plain.length);
 
             byte[] encrypted = new byte[plain.length];
             for(int i=0; i < plain.length; i+=8){
                 byte[] block = this.get_block(plain, 8, i);
                 byte[] encryptedBlock = cipher.doFinal(block);
                 System.arraycopy(encryptedBlock, 0, encrypted, i, 8);
-                System.out.println(new String(Base64.getEncoder().encode(encryptedBlock)));
-                System.out.println(new String(Base64.getEncoder().encode(encrypted)));
+                //System.out.println(new String(Base64.getEncoder().encode(encryptedBlock)));
+                //System.out.println(new String(Base64.getEncoder().encode(encrypted)));
 
             }
 
@@ -106,9 +106,9 @@ public class DES extends CipherAbstractByteBase {
             cipher.init(Cipher.DECRYPT_MODE, keyKey);
 
             //padding only the necessary number of bytes
-            byte[] plain = this.padder(byteFile, byteFile.length+(8-byteFile.length%8));
-            System.out.println("bytefile length = " + byteFile.length);
-            System.out.println("padder worked; plain length " + plain.length);
+            byte[] plain = this.padder(byteFile, 8);
+            //System.out.println("bytefile length = " + byteFile.length);
+            //System.out.println("padder worked; plain length " + plain.length);
 
             byte[] encrypted = new byte[plain.length];
             // by 16 bytes to skip over weird data
@@ -117,15 +117,13 @@ public class DES extends CipherAbstractByteBase {
 
                 byte[] encryptedBlock = cipher.doFinal(block);
                 //I'm looking at each block and it should be printing it to output properly
-                System.out.println(new String(encryptedBlock));
+                //System.out.println(new String(encryptedBlock));
                 System.arraycopy(encryptedBlock, 0, encrypted, i, 8);
-                System.out.println("DECRYPTED TEXT:: " + new String(encrypted));
+                //System.out.println("DECRYPTED TEXT:: " + new String(encrypted));
             }
 
             /* NOTE: Updated version: Remove the last 8 bytes of padding */
-            byte[] result = new byte[encrypted.length - (8*4)];
-            System.arraycopy(encrypted, 0, result, 0, encrypted.length - (8*4));
-            return result;
+            return padderStrip(encrypted);
 
             /* NOTE: Original version: Remove the block above to revert */
             //return encrypted;
@@ -187,4 +185,9 @@ public class DES extends CipherAbstractByteBase {
         /* Invalid character */
       else return 'z';
     }
- }
+
+    @Override
+    public Integer blockSize() {
+        return 8;
+    }
+}
