@@ -31,4 +31,3 @@ public abstract class AbstractCipherIndividual extends AbstractCipherBaseTest<Ci
         assertEquals(string_to_encrypt(), cipher.decrypt(encrypted_text));
     }
 }
-

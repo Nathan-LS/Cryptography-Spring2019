@@ -34,10 +34,14 @@ public class DES extends CipherAbstractByteBase {
         while (desKeyIndex != 8) {
             /* Convert the key if the character is valid */
             System.out.println(keyArray[keyIndex] + " " + keyArray[keyIndex + 1]);
+
+            /* NOTE: We are getting a return value of z, so false is returned */
             if ((des_key[desKeyIndex] = (byte)twoCharToHexByte(keyArray[keyIndex], keyArray[keyIndex + 1])) == 'z') {
                 System.out.println("twoCharToHexByte returns " + des_key[desKeyIndex] + ", false will be returned.");
                 return false;
             }
+
+
             keyIndex += 2; /* Go to the second pair of characters */
             ++desKeyIndex; /* Increment the index */
         }

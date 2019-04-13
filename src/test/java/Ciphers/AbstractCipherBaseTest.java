@@ -10,7 +10,7 @@ public abstract class AbstractCipherBaseTest<T extends CipherInterface> {
     @BeforeEach
     void setUp() throws Exception {
         cipher = reflection_make();
-        assertTrue(cipher.setKey(key()));
+        assertTrue(cipher.setKey(key())); // DES fails here
     }
 
     private T reflection_make() throws Exception {
